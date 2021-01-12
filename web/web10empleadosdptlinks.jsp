@@ -1,5 +1,7 @@
 
 
+
+<%@page import="java.sql.Statement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
@@ -21,17 +23,23 @@ DriverManager.getConnection(cadena ,"system" , "oracle");
     <body>
         <h1>EMPLEADOS DEPARTAMENTO LINKS</h1>
         <ul>
-            <li>
-                
-                <a href="web10empleadosdptlinks.jsp?deptno=10">Contabilidad</a>
-            </li>
-            <li>
-                <a href="web10empleadosdptlinks.jsp?deptno=20">Investigacion</a>
-            </li>
-            <li>
-                <a href="web10empleadosdptlinks.jsp?deptno=30">Ventas</a>
-            </li>
-            
+          <%
+          Statement st =
+          cn.createStatement();
+          String sqldept ="select * from dept";
+          //declarar un resultset???
+          ResultSet rs = st.executeQuery(sqldept);
+          while (rs.next()){
+          String num = rs.getString("dept_no");
+          String nom = rs.getString("dnombre");
+          %>
+          <li>
+              <a href="web10empleadosdptlinks.jsp?deptno=<%=num%>"><%=nom%></a>
+          </li>  
+            <%
+          }
+        rs.close();
+          %>
         </ul>
         <%
         String dato = request.getParameter("deptno");
@@ -40,7 +48,7 @@ DriverManager.getConnection(cadena ,"system" , "oracle");
         String sql = "select * from emp where dept_no=?";
         PreparedStatement pst = cn.prepareStatement(sql);
         pst.setInt(1,deptno);
-        ResultSet rs = pst.executeQuery();
+        rs = pst.executeQuery();
           %>
           <ul>
           <%   
