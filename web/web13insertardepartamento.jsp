@@ -30,8 +30,14 @@ Connection cn = DriverManager.getConnection(cadena, "system", "oracle");
         <title>Insertar</title>
     </head>
     <body>
+        
+        <%--  <main class="main bg-dark">
+          
+            <iframe class="iframe-preview" width="100%" src="imagen/1.jpg"></iframe>
+          
+       </main> --%>
         <h1>Insertar Departamentos</h1>
-   
+     
     <form method="post" >
         <label> deptno </label>
         <%-- creamos el boton del campo que quiero insertar y 
@@ -105,5 +111,6 @@ Connection cn = DriverManager.getConnection(cadena, "system", "oracle");
                 }
         cn.close();
                 %>  
+                
  </body>
 </html>
