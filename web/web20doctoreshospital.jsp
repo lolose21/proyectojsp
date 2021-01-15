@@ -4,6 +4,7 @@
     Author     : Usuario
 --%>
 
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.lang.reflect.Array"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
@@ -89,12 +90,33 @@ listaseleccion.add(dato);
             if(hospitales != null){
             //separamos todos los hospitales por comas en un string
             //18 , 19
-            String valores = String.join(",", hospitales);
-            //select * from doctor where hospital_cod in (18 , 19)
-            String sqldoctores ="select * from doctor where hospital_cod in("
-                    + valores + ")";
-            st = cn.createStatement();
-            rs = st.executeQuery(sqldoctores);
+            //quiero que valores sea (?,?)
+            //tantas interrogaciones como hospitales
+            String valores = "(";
+            for(String h: hospitales){
+            valores += "?,";
+            }
+            //debemos quitar la ultima coma
+            //vamos a coger la cadena desde 0 hasta antes de la coma
+            //recuperamos la posicion
+            int ultimacoma = valores.lastIndexOf(",");
+            valores = valores.substring(0 , ultimacoma);
+            valores += ")";
+              //select * from doctor where hospital_cod in (18 , 19)
+            String sqldoctores ="select * from doctor where hospital_cod in"
+                    + valores;
+                 
+            PreparedStatement pst = cn.prepareStatement(sqldoctores);
+            //pasamos los parametros al preparedStatement
+            int posicion = 1;
+            //recorremos todos los parametros
+            for (String h: hospitales){
+            //convertimos cada texto hospital a numero hospital
+            int hospitalcod = Integer.parseInt(h);
+            pst.setInt(posicion, hospitalcod);
+            posicion++;
+            }
+           rs = pst.executeQuery();
             %>
             <table border="1">
                 <thead>
