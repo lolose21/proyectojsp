@@ -2,10 +2,19 @@
  
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 String[] ingredientes = new String[]
 {"sal","azucar","leche","mandarinas", "cacao"};
+//RECUPERAMOS LOS ELEMENTOS SELECCIONADOS
+String[] datosseleccionados = request.getParameterValues("ingrediente");
+ArrayList<String> listaseleccion = new ArrayList<>();
+if (datosseleccionados != null) {
+for (String dato: datosseleccionados){
+listaseleccion.add(dato);
+    }
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -20,11 +29,32 @@ String[] ingredientes = new String[]
             
             <%
             for (String ing: ingredientes ){
+             if(listaseleccion.size() == 0 ){
+             //dibujamos sin seleccionar
+              %>
+            <li>
+                <input type="checkbox" name="ingrediente" value="<%=ing%>"/><%=ing%>
+            </li>
+             <%
+             }else{
+             //preguntamos si existe algun dato en la lista de seleccion
+             if(listaseleccion.contains(ing)){
+             //seleccionados
+            %>
+            <li>
+                <input type="checkbox" name="ingrediente" value="<%=ing%>" checked/><%=ing%>
+            </li>
+            <%
+             }else{
+                //sin seleccion
             %>
             <li>
                 <input type="checkbox" name="ingrediente" value="<%=ing%>"/><%=ing%>
             </li>
             <%
+                    }
+                }   
+           
             }
             %>
         </ul>
