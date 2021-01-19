@@ -29,6 +29,11 @@ Connection cn =DriverManager.getConnection(cadena , "system" , "oracle");
     </head>
     <body>
         <h1>Hello World!</h1>
+        <style>
+            ul#menu li{
+                display: inline
+            }
+        </style>
         <%
         //no tenemos el numero de registros total a dibujar
         String sqlregistros = "select count(emp_no ) as personas from emp ";
@@ -83,5 +88,20 @@ cn.close();
     %>
      </tbody>
     </table>
+     <hr/>
+     <ul id="menu">
+         <%
+         int numeropagina =1;
+         for (int i = 1; i <= registros; i += 5){
+         %>
+         <li>
+             <a href="web26paginaciongrupooracle.jsp?posicion=<%=i%>"><%=numeropagina%>
+             </a>
+         </li>
+         <%
+             numeropagina++;
+         }
+         %>
+     </ul>
     </body>
 </html>
