@@ -19,6 +19,11 @@ Connection cn =
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+              ul#menu li {
+                display:inline;
+            }
+        </style>
     </head>
     <body>
         <h1>Paginacion grupo</h1>
