@@ -7,6 +7,9 @@ select * from
 (select apellido from emp) empleados ) consulta
 where posicion >= 1 and posicion < (1+5); 
                   6               (6 + 5)
+
+select * from emp
+where rownum >= 1 and rownum <=6;
 --%>
 
 <%@page import="java.sql.PreparedStatement"%>
@@ -23,11 +26,14 @@ Connection cn =DriverManager.getConnection(cadena , "system" , "oracle");
 %>
 <!DOCTYPE html>
 <html>
+ 
     <head>
+    
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
+        
         <h1>Hello World!</h1>
         <style>
             ul#menu li{
