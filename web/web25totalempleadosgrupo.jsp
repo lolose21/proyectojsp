@@ -39,20 +39,36 @@ Connection cn =
     </head>
     <body>
         <h1>TODOS empleados</h1>
+        <form method="post">
+            <label> Introduzca salario</label>
+            <input type="number" name="cajasalario" required/>
+            <button type="submit">
+                Mostrar empleados
+            </button>
+                
+        </form>
         <%
       
-        String todosempleados="select * from todosempleados";
-       
-        Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE , 
-                ResultSet.CONCUR_READ_ONLY);
-        
-        ResultSet rs = st.executeQuery(todosempleados);
-  
+        String sql="";
         int posicion= 1;
         String dato = request.getParameter("posicion");
         if (dato != null){
         posicion =Integer.parseInt(dato);
         }
+
+        if (request.getParameter("cajasalario")== null){
+        sql ="select * from todosempleados";
+        posicion =1;
+        }else{
+        sql="select * from todosempleados where sueldos >="
+                + request.getParameter("cajasalario");
+        }
+        Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE , 
+                ResultSet.CONCUR_READ_ONLY);
+        
+        ResultSet rs = st.executeQuery(sql);
+  
+       
         //averiguamos el numero de registros 
         rs.last();
         int numregistros = rs.getRow();
@@ -91,13 +107,27 @@ Connection cn =
                 int numeropagina = 1;
                 //recorremos los registros se tres en tres
                 for (int i= 1; i <= numregistros; i+=5){
-                %>
+                    String cajasalario = request.getParameter("cajasalario");
+                    if(cajasalario == null){
+                    //no recibimos salario y pintamos solo la posicion
+                    %>
                 <li>
                     <a href="web25totalempleadosgrupo.jsp?posicion=<%=i%>">
                     Tabla <%=numeropagina%>
                     </a>
                 </li>
                 <%
+                    }else{
+                        //pintamos la posicion y la caja salario
+                %>
+                <li>
+                    <a href="web25totalempleadosgrupo.jsp?posicion=<%=i%>&cajasalario=<%=cajasalario%>">
+                    Tabla <%=numeropagina%>
+                    </a>
+                </li>
+                <%
+                    }
+              
                     numeropagina +=1;
                 }
                 %>
